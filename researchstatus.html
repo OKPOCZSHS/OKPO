@@ -47,26 +47,28 @@
                 <h2>Edit Violations</h2>
                 <label for="violationType">Select Violation Type:</label>
                 <select id="violationType" onchange="updateViolations()">
-                    <option value="">--Select--</option>
-                    <option value="minor">Minor Violations</option>
-                    <option value="major">Major Violations</option>
+                  <option value="">--Select--</option>
+                  <option value="minor">Minor Violations</option>
+                  <option value="major">Major Violations</option>
                 </select>
-
+              </div>
+              <div class="admin-section">
                 <label for="violations">Select Specific Violation:</label>
                 <select id="violations">
-                    <option value="">--Select a violation--</option>
+                  <option value="">--Select a violation--</option>
                 </select>
-
+              </div>
+              <div class="admin-section">
+                <label for="violationType">Name of the Verifier:</label>
                 <input type="text" id="verified-by-input" placeholder="Verified by">
                 <button onclick="addViolation()">Add Violation</button>
-            </div>
+              </div>
         </div>
         <div class="content hidden" id="main-content">
             <p>Check your status</p>
             <a href="#" class="button">Check your status</a>
         </div>
     </div>
-
     <script>
         const minorViolations = [
             "Pagpasok ng huli sa itinakdang oras ng paaralan/ Pagliban sa klase ng walang sapat na dahilan/Pag cutting ng klase",
