@@ -109,7 +109,6 @@ function addViolation() {
   loginForm.addEventListener('submit', (event) => {
     event.preventDefault(); // Prevent form submission
     // ... (Your authentication logic here) ...
-    // Example: Check if username is "Stacey" and password is "password"
     if (document.getElementById('username').value === 'Stacey' && document.getElementById('password').value === 'password') {
       loginForm.classList.add('hidden');
       mainContent.classList.remove('hidden');

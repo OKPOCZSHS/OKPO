@@ -38,30 +38,21 @@
                         <th colspan="1" class="head">Violations</th>
                         <th colspan="1" class="head">Verified by</th>
                     </tr>
-                    <tr id="no-violations-row">
-                        <td colspan="2" class="NOVIOLATIONS"><strong>You have no violations.</strong></td>
+                    <tr>
+                        <td colspan="1">Pagpasok ng huli sa itinakdang oras ng paaralan/ Pagliban sa klase ng walang sapat na dahilan/Pag cutting ng klase</strong></td>
+                        <td colspan="1">Ma'am Garamuda</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">Pagpasok ng huli sa itinakdang oras ng paaralan/ Pagliban sa klase ng walang sapat na dahilan/Pag cutting ng klase</strong></td>
+                        <td colspan="1">Ma'am Garamuda</strong></td>
                     </tr>
                 </table>
             </div>
             <div class="admin-section">
-                <h2>Edit Violations</h2>
-                <label for="violationType">Select Violation Type:</label>
-                <select id="violationType" onchange="updateViolations()">
-                  <option value="">--Select--</option>
-                  <option value="minor">Minor Violations</option>
-                  <option value="major">Major Violations</option>
-                </select>
-              </div>
-              <div class="admin-section">
-                <label for="violations">Select Specific Violation:</label>
-                <select id="violations">
-                  <option value="">--Select a violation--</option>
-                </select>
-              </div>
-              <div class="admin-section">
-                <label for="violationType">Name of the Verifier:</label>
-                <input type="text" id="verified-by-input" placeholder="Verified by">
-                <button onclick="addViolation()">Add Violation</button>
+                <h2>Should you have any concerns, you can contact our admin team.</h2>
+                <p><strong>Ma'am Garamuda Gord</strong>: securitygord@gmail.com / 09171771777</p>
+                <p><strong>Sir Urada Hapart</strong>: nakibahagi@gmail.com / 09969669666</p>
+                <p><strong>Ma'am Hello Perd</strong>: hello.perd@gmail.com / 09121231234</p>
               </div>
         </div>
         <div class="content hidden" id="main-content">
@@ -136,17 +127,29 @@
             if (violationInput && verifiedByInput) {
                 const table = document.getElementById('board');
                 const noViolationsRow = document.getElementById('no-violations-row');
+
+                // Remove the "no violations" row if it exists
                 if (noViolationsRow) {
                     table.deleteRow(noViolationsRow.rowIndex);
                 }
 
-                const newRow = table.insertRow();
-                const violationCell = newRow.insertCell(0);
-                const verifiedByCell = newRow.insertCell(1);
+                // Check if there's already a violation displayed
+                if (table.rows.length > 1) {
+                    // Update the existing row
+                    const existingRow = table.rows[1];
+                    existingRow.cells[0].textContent = violationInput;
+                    existingRow.cells[1].textContent = verifiedByInput;
+                } else {
+                    // Create a new row if none exists
+                    const newRow = table.insertRow();
+                    const violationCell = newRow.insertCell(0);
+                    const verifiedByCell = newRow.insertCell(1);
 
-                violationCell.textContent = violationInput;
-                verifiedByCell.textContent = verifiedByInput;
+                    violationCell.textContent = violationInput;
+                    verifiedByCell.textContent = verifiedByInput;
+                }
 
+                // Clear the inputs
                 document.getElementById('violations').value = '';
                 document.getElementById('verified-by-input').value = '';
             } else {
