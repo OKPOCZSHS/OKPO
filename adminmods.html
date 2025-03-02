@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OKPO</title>
-    <script src="research.js"></script>
     <link rel="stylesheet" href="researchpolicies.css">
     <style>
         /* CSS to lock the size of the dropdowns */
@@ -13,56 +12,91 @@
             box-sizing: border-box; /* Include padding and borders in the total width */
             padding: 1px; /* Optional: Add some padding for better appearance */
         }
+        .search-results {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .search-results li {
+            cursor: pointer;
+            padding: 5px;
+            background-color: #f0f0f0;
+            margin: 2px 0;
+        }
+        .search-results li:hover {
+            background-color: #d0d0d0;
+        }
+        .remove-violation {
+            cursor: pointer;
+            color: red;
+            margin-left: 10px;
+        }
+        .admin-section {
+            border: 5px solid rgb(141, 0, 0);
+            background-color: rgb(255, 255, 185);
+            padding: 5px;
+        }
+        /* Set specific width for the "Verified by" column */
+        th.verified-by {
+            width: 200px; /* Adjust this value as needed */
+        }
+        /* Ensure the table layout is fixed to respect column widths */
+        table {
+            table-layout: fixed;
+            width: 100%; /* Make the table take full width */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <a href="homepage.html"> <img src="imagesz/cielito.jpg" alt="School Logo" class="logo"></a>
+            <a href="adminpage.html"> <img src="imagesz/cielito.jpg" alt="School Logo" class="logo"></a>
             <div class="OKPO">
                 <h1>ONLINE KASUNDUAN PORTAL</h1>
             </div>
         </div>
         <ul class="menuul">
-            <li class="menuli"><a href="research.html">Profile</a></li>
-            <li class="menuli"><a href="researchstatus.html">Status</a></li>
-            <li class="menuli"><a href="researchpolicies.html">Policies</a></li>
+            <li class="menuli"><a href="adminmods.html">Modify</a></li>
+            <li class="menuli"><a href="adminpolicies.html">Policies</a></li>
             <div class="time-date" id="clock"></div>
         </ul>
         <div class="content" id="login-form">
             <h1 class="h1table">Violations History</h1>
+            <label for="studentIdSearch">Search Student ID:</label>
+            <input type="text" id="studentIdSearch" placeholder="Enter Student ID" oninput="searchStudent()">
+            <ul id="searchResults" class="search-results"></ul>
+            <br>
             <div class="seatingdiv">
                 <br>
                 <table id="board">
                     <tr>
-                        <th colspan="1" class="head">Violations</th>
-                        <th colspan="1" class="head">Verified by</th>
+                        <th colspan="1" class="head violations">Violations</th>
+                        <th colspan="1" class="head verified-by">Verified by</th> <!-- Added class for width -->
+                        <th colspan="1" class="head"></th>
                     </tr>
                     <tr id="no-violations-row">
-                        <td colspan="2" class="NOVIOLATIONS"><strong>You have no violations.</strong></td>
+                        <td colspan="3" class="NOVIOLATIONS"><strong>You have no violations.</strong></td>
                     </tr>
                 </table>
             </div>
+            <br>
+            <br>
+            <h2 class="h2edit">Edit Violations</h2>
             <div class="admin-section">
-                <h2>Edit Violations</h2>
                 <label for="violationType">Select Violation Type:</label>
                 <select id="violationType" onchange="updateViolations()">
-                  <option value="">--Select--</option>
-                  <option value="minor">Minor Violations</option>
-                  <option value="major">Major Violations</option>
+                    <option value="">--Select--</option>
+                    <option value="minor">Minor Violations</option>
+                    <option value="major">Major Violations</option>
                 </select>
-              </div>
-              <div class="admin-section">
                 <label for="violations">Select Specific Violation:</label>
                 <select id="violations">
-                  <option value="">--Select a violation--</option>
+                    <option value="">--Select a violation--</option>
                 </select>
-              </div>
-              <div class="admin-section">
-                <label for="violationType">Name of the Verifier:</label>
+                <label for="verified-by-input">Name of the Verifier:</label>
                 <input type="text" id="verified-by-input" placeholder="Verified by">
                 <button onclick="addViolation()">Add Violation</button>
-              </div>
+            </div>
         </div>
         <div class="content hidden" id="main-content">
             <p>Check your status</p>
@@ -70,6 +104,7 @@
         </div>
     </div>
     <script>
+        // Minor Violations
         const minorViolations = [
             "Pagpasok ng huli sa itinakdang oras ng paaralan/ Pagliban sa klase ng walang sapat na dahilan/Pag cutting ng klase",
             "Hindi pagsusuot ng angkop na kasuotan sa paaralan (uniforms, I.D).",
@@ -87,6 +122,7 @@
             "Pagpapakita ng kalaswaan (pagdadala, pagbabasa, pagbabahagi at panunuod ng kalaswaan)."
         ];
 
+        // Major Violations
         const majorViolations = [
             "Pakikisangkot sa anumang uri ng gulo sa loob at labas ng paaralan.",
             "Pagbabanta, pambubuyo, panunukso, pang-iinsulto, at pananakit sa kapwa mag aaral at sa mga nanunungkulan sa paaralan sa loob at labas nito, at lahat ng uri ng pambubulas",
@@ -103,8 +139,84 @@
             "Pagkuha, panghihiram, at paggamit/pagsusuot ng I.D. ng ibang mag-aaral at guro.",
             "Pagpasok sa paaralan ng nasa ilalim ng impluwensya ng alak, at anumang uri ng ipinagbabawal na gamot, at gayundin sa pagdadala nito.",
             "Pagdadala ng nakamamatay, nakakasakit, at nakakasugat na kagamitan at sandata.",
-            "Pagpasok sa paaralan na hindi dala ang Kasunduan/Student Handbook"
+            "Pagpasok sa paaralan na hindi dala ang Kasunduan/Student Handbook."
         ];
+
+        const students = [
+            { id: "483526150098", violations: [minorViolations[0], minorViolations[0]], verifiedBy: "Ma'am Garamuda" },
+            { id: "483526150105", violations: [minorViolations[8]], verifiedBy: "Ma'am Garamuda" },
+            { id: "483526150113", violations: [minorViolations[7]], verifiedBy: "Ma'am Garamuda" },
+            // Add more students as needed
+        ];
+
+        let selectedStudent = null; // Variable to hold the currently selected student
+
+        function searchStudent() {
+            const searchInput = document.getElementById('studentIdSearch').value.toLowerCase();
+            const searchResults = document.getElementById('searchResults');
+            searchResults.innerHTML = ''; // Clear previous results
+
+            if (searchInput) {
+                const filteredStudents = students.filter(student => student.id.includes(searchInput));
+                
+                filteredStudents.forEach(student => {
+                    const li = document.createElement('li');
+                    li.textContent = student.id;
+                    li.onclick = () => selectStudent(student); // Set click event to select the student
+                    searchResults.appendChild(li);
+                });
+            }
+        }
+
+        function selectStudent(student) {
+            selectedStudent = student; // Set the selected student
+            const violationsDropdown = document.getElementById("violations");
+            violationsDropdown.innerHTML = '<option value="">--Select a violation--</option>';
+
+            document.getElementById('verified-by-input').value = student.verifiedBy || '';
+            displayViolations(student); // Ensure violations are displayed
+
+            alert(`Selected Student ID: ${student.id}`);
+        }
+
+        function displayViolations(student) {
+            const table = document.getElementById('board');
+
+            // Remove all rows except the header
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+
+            if (student.violations.length === 0) {
+                const newRow = table.insertRow();
+                const cell = newRow.insertCell(0);
+                cell.colSpan = 3;
+                cell.className = "NOVIOLATIONS";
+                cell.innerHTML = "<strong>You have no violations.</strong>";
+            } else {
+                student.violations.forEach((violation, index) => {
+                    const newRow = table.insertRow();
+                    const violationCell = newRow.insertCell(0);
+                    const verifiedByCell = newRow.insertCell(1);
+                    const actionCell = newRow.insertCell(2);
+
+                    violationCell.textContent = violation;
+                    verifiedByCell.textContent = student.verifiedBy || "N/A"; // Show N/A if no verifier
+
+                    // Create a remove button
+                    const removeButton = document.createElement("span");
+                    removeButton.textContent = "Remove the violation";
+                    removeButton.className = "remove-violation";
+                    removeButton.onclick = () => removeViolation(student, index);
+                    actionCell.appendChild(removeButton);
+                });
+            }
+        }
+
+        function removeViolation(student, index) {
+            student.violations.splice(index, 1); // Remove the violation from the array
+            displayViolations(student); // Refresh the display
+        }
 
         function updateViolations() {
             const violationType = document.getElementById("violationType").value;
@@ -133,24 +245,16 @@
             const violationInput = document.getElementById('violations').value;
             const verifiedByInput = document.getElementById('verified-by-input').value;
 
-            if (violationInput && verifiedByInput) {
-                const table = document.getElementById('board');
-                const noViolationsRow = document.getElementById('no-violations-row');
-                if (noViolationsRow) {
-                    table.deleteRow(noViolationsRow.rowIndex);
-                }
-
-                const newRow = table.insertRow();
-                const violationCell = newRow.insertCell(0);
-                const verifiedByCell = newRow.insertCell(1);
-
-                violationCell.textContent = violationInput;
-                verifiedByCell.textContent = verifiedByInput;
-
+            if (selectedStudent && violationInput && verifiedByInput) {
+                selectedStudent.violations.push(violationInput);
+                selectedStudent.verifiedBy = verifiedByInput; // Store the verifier
+                displayViolations(selectedStudent);
+                
+                // Clear the inputs
                 document.getElementById('violations').value = '';
                 document.getElementById('verified-by-input').value = '';
             } else {
-                alert("Please select a violation and enter who verified it.");
+                alert("Please select a student, a violation, and enter who verified it.");
             }
         }
     </script>

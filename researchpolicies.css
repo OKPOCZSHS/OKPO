@@ -81,6 +81,9 @@ body {
     color: rgb(71, 0, 0);
     text-align: center
 }
+.h2edit {
+    color: rgb(71, 0, 0);
+}
 table, th, td {
     border:3px solid rgb(141, 0, 0);
     border-collapse: collapse;
@@ -206,7 +209,7 @@ nav a:hover {
     display: none;
   }
   .admin-section {
-    margin-top: 20px;
+    margin-top: 15px;
   }
   .admin-section input, .admin-section button {
     margin: 5px;

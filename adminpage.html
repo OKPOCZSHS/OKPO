@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OKPO</title>
+  <script src="index.js"></script>
+  <link rel="stylesheet" href="research.css">
+</head>
+<body>
+  <div class="container">
+  <div class="header">
+    <a href="homepage.html"> <img src="imagesz/cielito.jpg" alt="School Logo" class="logo"></a>
+    <div class="OKPO">
+    <h1>ONLINE KASUNDUAN PORTAL</h1>
+  </div>
+</div>
+<ul class="menuul">
+  <li class="menuli"><a href="adminmods.html">Modify</a></li>
+  <li class="menuli"><a href="adminpolicies.html">Policies</a></li>
+  <div class="time-date" id="clock">
+  </div>
+</ul>
+<div class="content" id="login-form">
+  <h1>Welcome, Admin.</h1>
+  <button  type="submit" onclick="adminRedirect(event)">Modify student status.</button>
+</div>
+<div class="content" id="login-form">
+  <button class="logout-button" onclick="confirmLogout()">Log Out</button>
+</div>
+
+<div class="content hidden" id="main-content">
+</div>
+</div>
+</body>
+</html>
