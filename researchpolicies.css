@@ -81,6 +81,10 @@ body {
     color: rgb(71, 0, 0);
     text-align: center
 }
+.polikies {
+    color: rgb(71, 0, 0);
+    text-align: left
+}
 .h2edit {
     color: rgb(71, 0, 0);
 }
@@ -96,7 +100,7 @@ th, td {
 .head {
     text-align: center;
 }
-#board {
+.board {
     width: 100%;
     text-align: center;
 }

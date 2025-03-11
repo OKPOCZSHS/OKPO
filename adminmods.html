@@ -58,6 +58,7 @@
         <ul class="menuul">
             <li class="menuli"><a href="adminmods.html">Modify</a></li>
             <li class="menuli"><a href="adminpolicies.html">Policies</a></li>
+            <li class="menuli"><a href="adminsignup.html">Student Sign-up</a></li>
             <div class="time-date" id="clock"></div>
         </ul>
         <div class="content" id="login-form">
@@ -142,41 +143,36 @@
             "Pagpasok sa paaralan na hindi dala ang Kasunduan/Student Handbook."
         ];
 
-        const students = [
-            { id: "483526150098", violations: [minorViolations[0], minorViolations[0]], verifiedBy: "Ma'am Garamuda" },
-            { id: "483526150105", violations: [minorViolations[8]], verifiedBy: "Ma'am Garamuda" },
-            { id: "483526150113", violations: [minorViolations[7]], verifiedBy: "Ma'am Garamuda" },
-            // Add more students as needed
-        ];
-
-        let selectedStudent = null; // Variable to hold the currently selected student
-
         function searchStudent() {
-            const searchInput = document.getElementById('studentIdSearch').value.toLowerCase();
+            const searchInput = document.getElementById('studentIdSearch').value.trim().toLowerCase();
             const searchResults = document.getElementById('searchResults');
             searchResults.innerHTML = ''; // Clear previous results
 
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+
             if (searchInput) {
-                const filteredStudents = students.filter(student => student.id.includes(searchInput));
-                
-                filteredStudents.forEach(student => {
-                    const li = document.createElement('li');
-                    li.textContent = student.id;
-                    li.onclick = () => selectStudent(student); // Set click event to select the student
-                    searchResults.appendChild(li);
-                });
+                const filteredStudents = students.filter(student =>
+                    student.id.toLowerCase().includes(searchInput)
+                );
+
+                if (filteredStudents.length === 0) {
+                    searchResults.innerHTML = '<li>No matching students found.</li>';
+                } else {
+                    filteredStudents.forEach(student => {
+                        const li = document.createElement('li');
+                        li.textContent = `${student.firstName} ${student.lastName} (LRN: ${student.id})`;
+                        li.onclick = () => selectStudent(student); // Select and display student data
+                        searchResults.appendChild(li);
+                    });
+                }
+            } else {
+                searchResults.innerHTML = '<li>Please enter an LRN to search.</li>';
             }
         }
 
         function selectStudent(student) {
-            selectedStudent = student; // Set the selected student
-            const violationsDropdown = document.getElementById("violations");
-            violationsDropdown.innerHTML = '<option value="">--Select a violation--</option>';
-
-            document.getElementById('verified-by-input').value = student.verifiedBy || '';
-            displayViolations(student); // Ensure violations are displayed
-
-            alert(`Selected Student ID: ${student.id}`);
+            selectedStudent = student; // Assign the selected student
+            displayViolations(student); // Show their violations
         }
 
         function displayViolations(student) {
@@ -214,15 +210,15 @@
         }
 
         function removeViolation(student, index) {
-            student.violations.splice(index, 1); // Remove the violation from the array
-            displayViolations(student); // Refresh the display
+            student.violations.splice(index, 1); // Remove the violation
+            saveStudentsToLocalStorage(); // Save updated data
+            displayViolations(student); // Refresh display
         }
 
         function updateViolations() {
             const violationType = document.getElementById("violationType").value;
             const violationsDropdown = document.getElementById("violations");
 
-            // Clear previous options
             violationsDropdown.innerHTML = '<option value="">--Select a violation--</option>';
 
             let violations = [];
@@ -232,7 +228,6 @@
                 violations = majorViolations;
             }
 
-            // Populate the second dropdown based on the selection
             violations.forEach(violation => {
                 const option = document.createElement("option");
                 option.value = violation;
@@ -247,16 +242,27 @@
 
             if (selectedStudent && violationInput && verifiedByInput) {
                 selectedStudent.violations.push(violationInput);
-                selectedStudent.verifiedBy = verifiedByInput; // Store the verifier
+                selectedStudent.verifiedBy = verifiedByInput;
+                saveStudentsToLocalStorage(); // Save updated data
                 displayViolations(selectedStudent);
-                
-                // Clear the inputs
+
+                // Clear inputs
                 document.getElementById('violations').value = '';
                 document.getElementById('verified-by-input').value = '';
             } else {
                 alert("Please select a student, a violation, and enter who verified it.");
             }
         }
+
+        // Helper function to save students to localStorage
+        function saveStudentsToLocalStorage() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const updatedStudents = students.map(student =>
+                student.id === selectedStudent.id ? selectedStudent : student
+            );
+            localStorage.setItem('students', JSON.stringify(updatedStudents));
+        }
+
     </script>
 </body>
 </html>

@@ -1,27 +1,35 @@
-const validUsername = 'czshsSTACEYHANDSOMEMANN';
-const validPassword = '12345678';
-const validAdminUser = 'helloperd';
+const validAdminUser  = 'helloperd';
 const validAdminPass = 'helloperd';
 
-// Login function
 function login(event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
 
-    // Retrieve input values
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-    const adminuser = document.getElementById('username').value;
-    const adminpass = document.getElementById('password').value;
 
-    // Check credentials
-    if (username === validUsername && password === validPassword) {
-        window.location.href = 'homepage.html'; // Redirect on successful login
-    } else if (adminuser === validAdminUser && adminpass === validAdminPass) {
-        window.location.href = 'adminpage.html'; // Redirect on successful login
+    // Retrieve the users array from local storage
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+
+    // Check for a valid user
+    const validUser  = users.find(user => user.username === username && user.password === password);
+
+    if (validUser ) {
+        // Store the user's profile in localStorage
+        localStorage.setItem('studentProfile', JSON.stringify(validUser .profile));
+        
+        // Redirect to the homepage if a valid user is found
+        window.location.href = 'homepage.html';
+    } else if (username === validAdminUser  && password === validAdminPass) {
+        // Redirect to the admin page if admin credentials are correct
+        window.location.href = 'adminpage.html';
     } else {
+        // Alert if the username or password is invalid
         alert('Invalid username or password.');
     }
 }
+
+// Attach the login function to the form submission
+document.getElementById('login-form').addEventListener('submit', login);
 
 function redirect(event) {
     event.preventDefault(); // Prevent the default form submission behavior
@@ -54,3 +62,18 @@ function confirmLogout() {
         alert("Log out canceled.");
     }
 }
+
+
+// RESETBUTTON
+
+function resetData() {
+    if (confirm("Are you sure you want to reset all data? This action cannot be undone.")) {
+        localStorage.clear(); // Clear all data from localStorage
+        alert("All data has been reset.");
+        // Optionally, redirect to the signup page or refresh the page
+        window.location.href = 'index.html'; // Change to your desired page
+    }
+}
+
+// Example: Attach the reset function to a button
+document.getElementById('reset-button').addEventListener('click', resetData);

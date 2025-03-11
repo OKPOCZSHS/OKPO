@@ -3,6 +3,7 @@
 <head>
   <title>OKPO</title>
   <script src="index.js"></script>
+  <script src="welcomepage.js"></script>
   <link rel="stylesheet" href="research.css">
 </head>
 <body>
@@ -21,8 +22,11 @@
   </div>
 </ul>
 <div class="content" id="login-form">
-  <h1>Welcome, Stacey Handsomemann.</h1>
+  <h1>Welcome.</h1>
   <button  type="submit" onclick="redirect(event)">Check your status.</button>
+</div>
+<div class="content" id="login-form">
+  <button class="logout-button" onclick="confirmLogout()">Log Out</button>
 </div>
 <div class="content hidden" id="main-content">
   <p>Check your status</p>

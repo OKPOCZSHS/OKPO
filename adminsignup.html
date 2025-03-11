@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OKPO</title>
+    <link rel="stylesheet" href="researchpolicies.css">
+    <style>
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 20%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="adminpage.html"> <img src="imagesz/cielito.jpg" alt="School Logo" class="logo"></a>
+            <div class="OKPO">
+                <h1>ONLINE KASUNDUAN PORTAL</h1>
+            </div>
+        </div>
+        <ul class="menuul">
+            <li class="menuli"><a href="adminmods.html">Modify</a></li>
+            <li class="menuli"><a href="adminpolicies.html">Policies</a></li>
+            <li class="menuli"><a href="adminsignup.html">Student Sign-up</a></li>
+            <div class="time-date" id="clock"></div>
+        </ul>
+        <div class="content">
+            <h1 class="h1table">Student Sign-Up</h1>
+            <form id="signup-form">
+                <label for="last-name">Last name:</label>
+                <input type="text" id="last-name" required>
+            
+                <label for="first-name">First name:</label>
+                <input type="text" id="first-name" required>
+                
+                <label for="middle-name">Middle name (Leave blank if none):</label>
+                <input type="text" id="middle-name">
+
+                <label for="suffix">Suffix (Leave blank if none):</label>
+                <input type="text" id="suffix">
+
+                <label for="grade-section">Grade and Section:</label>
+                <input type="text" id="grade-section" required>
+
+                <label for="track-strand">Track and Strand:</label>
+                <input type="text" id="track-strand" required>
+            
+                <label for="lrn">LRN:</label>
+                <input type="text" id="lrn" required>
+
+                <label for="email">E-mail:</label>
+                <input type="text" id="email" required>
+            
+                <label for="new-username">Username:</label>
+                <input type="text" id="new-username" required>
+            
+                <label for="new-password">Password:</label>
+                <input type="password" id="new-password" required>            
+        
+                <button onclick="signup()">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="adminsignup.js"></script>
+</html>
